@@ -4,9 +4,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Untitled Document</title>
 <link href='http://fonts.googleapis.com/css?family=Rock+Salt|Karla:400,400italic,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-<link href="style.css" rel="stylesheet" type="text/css" />
-<script src="jq.js"></script>
-<script src="script.js"></script>
+<link href="/css/style.css" rel="stylesheet" type="text/css" />
+<link href="/css/colpick.css" rel="stylesheet" type="text/css" />
+<script src="/js/jq.js"></script>
+<script src="/js/colpick.js"></script>
+<script src="/js/script.js"></script>
 </head>
 
 <body>

@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-include('dbspul.php');
+include('db_tijdklok.php');
 
 $content = '<h1>Instellingen tijdschakeling</h1>
 		<p>Geef hier aan wanneer de kubussen aan en uit moeten schakelen.<br />Is de uit tijd vroeger dan de aan tijd dan betekend dat hij de volgende dag uit gaat.</p>

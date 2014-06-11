@@ -115,14 +115,17 @@ font-weight:700;
 	padding-bottom:16px;
 }
 #c_content #content label{
-	width:100px;
+	width:230px;
 	float:left;
 	font-size:14px;
 	line-height:38px;
 }
 #c_content #content input{
-padding:8px;
-margin-bottom:10px;
+	padding:8px;
+	margin-bottom:10px;
+}
+#c_content #content input.opslaan{
+color:#fff;
 }
 #c_footer{
 	width:100%;
@@ -176,7 +179,7 @@ margin-bottom:10px;
     padding: 2px 8px;
     position: relative;
     width: 150px;
-    margin-left:100px;
+    margin-left:230px;
     }
 table td{
 	padding:3px 6px;
@@ -205,51 +208,115 @@ table td{
 	position:relative;
 	float:left;
 	width:100%;
-	
+	overflow: auto;
+	overflow-y: hidden;
+	display:inline;
 }
 #container_kubus1, #container_kubus2, #container_kubus3{
 	position:relative;
 	float:left;
-	width:40px;
+	height:60px;
+	min-width:100%;
+	overflow-y: hidden;
+	display:inline;
 }
-.frame{
-position:relative;
-float:left;
-width:20px;
-height:20px;
-border:1px solid #bbb;
-margin:0 9px 8px;
+#container_kubus1 div, #container_kubus2 div, #container_kubus3 div{
+	display:inline;
 }
+.frame, .addframes{
+	display:inline;
+	width:8px;
+	height:20px;
+	border:1px solid #bbb;
+	margin:0px 1px 8px;
+	padding:4px;
+}
+.addframes{
+	width:30px;
+	text-align:center;
+	line-height:20px;
+	background:#4C4C4C;
+	color:#fff;
+	font-weight:bold;
+}
+
 .key{
-border:2px solid #555;
+	border-bottom:4px solid #E20019;
+}
+#picker{
+margin-bottom:10px;
 }
 #popup{
-width: 285px;
-height:250px;
-position:absolute;
-display:none;
-background:#fff;
--webkit-border-radius: 6px;
--moz-border-radius: 6px;
-border-radius: 6px;
-border: 1px solid  #4C4C4C;
-padding:8px;
+	width: 285px;
+	position:absolute;
+	display:none;
+	background:#fff;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	border: 1px solid  #4C4C4C;
+	padding:8px;
+	box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
+	z-index:999;
 }
 #popup-line{
-	width:20px;
+	width:16px;
 	height:1px;
 	position:absolute;
-	left:-20px;
+	right:-16px;
 	top:25px;
 	background:#E20019;
 }
 #popup-close{
-	width:8px;
-	height:8px;
-	position:absolute;
-	right:4px;
-	top:4px;
+	position:relative;
+	float:right;
+	top:8px;
+	padding:4px 6px;
+	color:#fff;
+	font-weight:bold;
+	background:#E20019;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
 }
 .frame_selected{
 	border-color: #E20019;
+}
+.knop{
+    background-color: #E20019;
+    border: 0 solid #B6B7BA;
+    color: #FFFFFF;
+    float: left;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 22px;
+    margin: 6px 0 6px 10px;
+    padding: 2px 8px;
+    position: relative;
+}
+.right{
+	float:right;
+	position:relative;
+}
+.kubus_benaming{
+padding-bottom:7px;
+position:relative;
+float:left;
+width:100%;
+}
+.uitleg{
+padding:30px 10px 20px;
+}
+.uitleg li a{
+color:#E20019;
+text-decoration:none;
+}
+.uitleg li{
+line-height:20px;
+list-style-type: disc;
+}
+#uitleg{
+position:relative;
+float:left;
+width:100%;
 }

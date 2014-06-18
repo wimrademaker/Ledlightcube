@@ -4,8 +4,16 @@ $(document).ready(function(){
 	var mw = $('#menu').outerWidth();
 	var csub = parseInt($('#content').css('marginLeft')) + parseInt($('#content').css('marginRight'));
 	var startkleur = '';
+	var h_menu = $('#menu').outerHeight();
+	var h_content = $('#content').outerHeight();
+	
 	$('#content').width((ww-mw-csub)+'px');
 	
+	if(h_content > h_menu){
+		$('#menu').height(parseInt(h_content)+10+'px');
+	}
+
+
 	$('.addframes').click(function(){
 		for ( var i = 0; i < 20; i++ ) {
 			$('<li class="frame">&nbsp;</li>').insertBefore('.addframes');

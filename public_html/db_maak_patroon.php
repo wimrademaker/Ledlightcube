@@ -1,5 +1,5 @@
-<?
-$config['db_path'] = "/var/www/schoorsteen/database/kubus";
+<?php
+$config['db_path'] = $_SERVER['DOCUMENT_ROOT']."/../database/kubus";
 $db = new PDO("sqlite:".$config['db_path']);
 
 if(isset($_POST['patroon']) && $_POST['patroon'] != ''){
@@ -19,8 +19,12 @@ if(isset($_POST['patroon']) && $_POST['patroon'] != ''){
 	//Haal de id van de metadata op
 	$patronen = json_decode($_POST['patroon']);
 	
+	print_r($patronen);
+	
 	$keys = array_keys((array)$patronen->kubus1);
+	
 	print_r($keys);
+	
 	foreach($keys as $key){
 		$sql = "INSERT INTO patronen (
 					id_patronen_metadata,
@@ -51,18 +55,7 @@ if(isset($_POST['patroon']) && $_POST['patroon'] != ''){
 				
 			)";
 		$db->query($sql);
-		header("location:/maak_patroon.php");
-	}
+	}		
+
+	header("location:/maak_patroon.php");
 }
-
-//Laad de nieuwe settings
-//$result = $db->query("SELECT 
-//							*
-//						FROM 
-//							instellingen
-//						WHERE id_instellingen = 1	
-//						");
-//$instellingen = $result->fetchAll(PDO::FETCH_ASSOC);
-//$instelling = $instellingen[0];	
-
-

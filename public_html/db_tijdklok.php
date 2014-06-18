@@ -1,5 +1,5 @@
-<?
-$config['db_path'] = "/var/www/schoorsteen/database/kubus";
+<?php
+$config['db_path'] = $_SERVER['DOCUMENT_ROOT']."/../database/kubus";
 $db = new PDO("sqlite:".$config['db_path']);
 
 if(isset($_POST['van_tijd']) && isset($_POST['tot_tijd']) && $_POST['van_tijd'] != '' && $_POST['tot_tijd'] != '' ){

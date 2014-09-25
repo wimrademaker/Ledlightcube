@@ -15,15 +15,11 @@ if(isset($_POST['patroon']) && $_POST['patroon'] != ''){
 			)";
 	$db->query($sql);
 	$patroon_id = $db->lastInsertId();
-	
+	//print_r($db->errorInfo());	
 	//Haal de id van de metadata op
 	$patronen = json_decode($_POST['patroon']);
 	
-	print_r($patronen);
-	
 	$keys = array_keys((array)$patronen->kubus1);
-	
-	print_r($keys);
 	
 	foreach($keys as $key){
 		$sql = "INSERT INTO patronen (
@@ -54,8 +50,10 @@ if(isset($_POST['patroon']) && $_POST['patroon'] != ''){
 				'".str_replace( "'", "''", $_POST['tijdseenheid'])."'
 				
 			)";
+		//echo $sql;
 		$db->query($sql);
+		//print_r($db->errorInfo());
 	}		
 
-	header("location:/maak_patroon.php");
+	//header("location:/maak_patroon.php");
 }

@@ -1,0 +1,200 @@
+#!/usr/bin/python
+import sys
+sys.path.append('/home/pi/Adafruit-Raspberry-Pi-Python-Code/Adafruit_PWM_Servo_Driver')
+from Adafruit_PWM_Servo_Driver import PWM
+from multiprocessing import Process
+import time
+import datetime
+import sqlite3
+
+
+# Initialise the PWM device using the default address
+pwm = PWM(0x40, debug=True)
+
+
+
+
+#Set de default settings
+servoMin = 10 #150  # Min pulse length out of 4096
+servoMax = 4095  # Max pulse length out of 4096
+servoUit = 4096
+update_freq = 120
+
+
+
+
+# Set de database connectie
+conn = sqlite3.connect('/var/www/Ledlightcube/database/kubus')
+db = conn.cursor()
+
+
+
+# Defineer functie Fade van kleur 1 naar kleur 2 in x tijd
+def fade(r1, r2, g1, g2, b1, b2, tijd, kubus):
+	#bereken of we op moeten tellen of af moeten trekken per kleur
+	r_add = False
+	g_add = False
+	b_add = False
+
+	if(r1 < r2):
+		r_add = True
+	if(g1 < g2):
+		g_add = True
+	if(b1 < b2):
+		b_add = True
+
+	#Bereken het aantal stappen op basis van 120Hz
+	stappen = round(tijd/0.00833)
+
+	#Bereken stappen offset per kleur per stap
+	r_stap = abs(r2 - r1) /stappen
+	g_stap = abs(g2 - g1) /stappen
+	b_stap = abs(b2 - b1) /stappen
+
+        #Set de start/reken waarde per kleur
+        r = r1
+        g = g1
+        b = b1
+
+        kanaal = kubus * 3 - 3
+
+
+	#Set de initieele start kleuren per kanaal
+	pwm.setPWM(kanaal, 0, r)
+    	pwm.setPWM(kanaal+1, 0, g)
+    	pwm.setPWM(kanaal+2, 0, b)
+
+	
+	#Loop door het aantal stappen en verander de stap kanaal waarde per stap 
+	#plus of min stap waarde?? nog aanpassen
+	while(stappen > 0):
+
+		# bereken afgeronde waarde per stap
+		# Voor rood
+		if(r_add == True):
+			r += r_stap
+		else:
+			r -= r_stap	
+	
+		# Voor groen
+		if(g_add == True):
+			g += g_stap
+		else:
+			g -= g_stap
+
+		# Voor blauw
+		if(b_add == True):
+			b += b_stap
+		else:
+			b -= b_stap
+		
+		r_round = int(round(r))
+		g_round = int(round(g))
+		b_round = int(round(b))
+
+		#print("kubus: " , kubus, " => rood :", r, " groen :",  g, "Blauw :", b )
+
+		#Stuur het afgeronde singaal naar de kanalen
+
+    		pwm.setPWM(kanaal, 0, r_round)
+    		pwm.setPWM(kanaal+1, 0, g_round)
+    		pwm.setPWM(kanaal+2, 0, b_round)
+
+  		#sleep voor 1 stap (op basis van 120hz)
+    		time.sleep(0.00833)
+		stappen -= 1
+
+
+
+
+#Start het script
+
+# Set de update frequentie voor de leds
+pwm.setPWMFreq(update_freq)                        
+
+
+
+
+# loop totdat de pi dood gaat
+while (True):
+	#Controleer de tijdschakelaar
+	db.execute('SELECT tijd_aan, tijd_uit FROM instellingen WHERE id_instellingen = 1')
+	settings = db.fetchone();
+
+	on = settings[0] 
+	off = settings[1]
+	now = datetime.datetime.now().strftime("%H-%M-%S")
+	if off < on:
+    		if now > off and now < on:
+	                pwm.setPWM(0, 0, 0)
+        	        pwm.setPWM(1, 0, 0)
+                	pwm.setPWM(2, 0, 0)
+                        pwm.setPWM(3, 0, 0)
+                        pwm.setPWM(4, 0, 0)
+                        pwm.setPWM(5, 0, 0)
+                        pwm.setPWM(6, 0, 0)
+                        pwm.setPWM(7, 0, 0)
+                        pwm.setPWM(8, 0, 0)
+                        time.sleep(60)
+
+			continue
+	else:
+    		if now > off or now < on:
+                        pwm.setPWM(0, 0, 0)
+                        pwm.setPWM(1, 0, 0)
+                        pwm.setPWM(2, 0, 0)
+                        pwm.setPWM(3, 0, 0)
+                        pwm.setPWM(4, 0, 0)
+                        pwm.setPWM(5, 0, 0)
+                        pwm.setPWM(6, 0, 0)
+                        pwm.setPWM(7, 0, 0)
+                        pwm.setPWM(8, 0, 0)
+			tim.sleep(60)
+			continue
+
+	# Laad de beschikbare patronen uit de database 
+	db.execute('SELECT * FROM patroon_actief ORDER BY id_patroon_geladen')
+	patronen = db.fetchall();
+
+	factor = 4095 / 255;
+
+	# Loop door de geladen patronen en stuur per kubus aan
+	for patroon in patronen:
+			
+		k1v_r = patroon[1] * factor;
+                k1v_g = patroon[2] * factor;
+                k1v_b = patroon[3] * factor;
+                k1n_r = patroon[4] * factor;
+                k1n_g = patroon[5] * factor;
+                k1n_b = patroon[6] * factor;
+                
+		k2v_r = patroon[7] * factor;
+                k2v_g = patroon[8] * factor;
+                k2v_b = patroon[9] * factor;
+                k2n_r = patroon[10] * factor;
+                k2n_g = patroon[11] * factor;
+                k2n_b = patroon[12] * factor;
+
+		k3v_r = patroon[13] * factor;
+                k3v_g = patroon[14] * factor;
+                k3v_b = patroon[15] * factor;
+                k3n_r = patroon[16] * factor;
+                k3n_g = patroon[17] * factor;
+                k3n_b = patroon[18] * factor;
+		t = patroon[19]
+		
+		# Kubus 1
+		kubus_1 = Process(target=fade, args=(k1v_r, k1n_r, k1v_g, k1n_g, k1v_b, k1n_b, t, 1))
+
+                # Kubus 2
+                kubus_2 = Process(target=fade, args=(k2v_r, k2n_r, k2v_g, k2n_g, k2v_b, k2n_b, t, 2))
+
+                # Kubus 3
+                kubus_3 = Process(target=fade, args=(k3v_r, k3n_r, k3v_g, k3n_g, k3v_b, k3n_b, t, 3))
+
+		kubus_1.start()
+                kubus_2.start()
+                kubus_3.start()
+		kubus_1.join()
+		kubus_2.join()
+		kubus_3.join()
